@@ -1,20 +1,23 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+const connectionPool = require("./database/connectionPool");
 
-var indexRouter = require('./routes/index');
-var customersRouter = require('./routes/customers');
+var indexRouter = require("./routes/index");
+var customersRouter = require("./routes/customers");
 
 var app = express();
 
-app.use(logger('dev'));
+connectionPool.init();
+
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/customers', customersRouter);
+app.use("/", indexRouter);
+app.use("/customers", customersRouter);
 
 module.exports = app;

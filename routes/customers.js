@@ -4,7 +4,7 @@ const mysql = require("mysql");
 
 // GET /customers
 router.get("/", function (req, res) {
-    const dbconfig = require("../dbconfig");
+    const dbconfig = require("../database/dbconfig");
 
     const db = mysql.createConnection(dbconfig);
 
