@@ -1,6 +1,15 @@
+const mysql = require("mysql");
+const dbconfig = require("../database/dbconfig");
+
 const connectionPool = {
+    pool: null,
+
     init: function () {
-        console.log("Initialising pool");
+        this.pool = mysql.createPool(dbconfig);
+    },
+
+    getPool: function () {
+        return this.pool;
     },
 };
 
