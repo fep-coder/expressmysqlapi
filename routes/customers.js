@@ -4,20 +4,19 @@ const connectionPool = require("../database/connectionPool");
 
 // GET /customers
 router.get("/", function (req, res) {
-    const customer = {
-        firstname: "Mike",
-        lastname: "Jones",
-        email: "mike@gmail.com",
-    };
+    res.send("Customers list");
+});
+
+// POST /customers
+router.post("/", function (req, res) {
+    // console.log("post body", req.body);
 
     connectionPool
         .getPool()
-        .query("insert into customers set ?", customer, (err, result) => {
+        .query("insert into customers set ?", req.body, (err, result) => {
             if (err) throw err;
             console.log(result);
         });
-
-    res.send("Customers list");
 });
 
 module.exports = router;
