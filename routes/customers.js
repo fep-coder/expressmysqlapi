@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const connectionPool = require("../database/connectionPool");
+const CustomerRepository = require("../database/CustomerRepository");
+
+const repository = new CustomerRepository(connectionPool);
 
 // GET /customers
 router.get("/", function (req, res) {
@@ -27,14 +30,11 @@ router.delete("/:id", function (req, res) {
 
 // POST /customers
 router.post("/", function (req, res) {
-    // console.log("post body", req.body);
-
-    connectionPool
-        .getPool()
-        .query("insert into customers set ?", req.body, (err, result) => {
-            if (err) throw err;
-            console.log(result);
-        });
+    repository.save(req.body, (err) => {
+        err
+            ? res.status(500).json({ error: err.toString() })
+            : res.sendStatus(200);
+    });
 });
 
 module.exports = router;
