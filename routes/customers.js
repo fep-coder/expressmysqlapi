@@ -10,7 +10,17 @@ router.get("/", function (req, res) {
 
     db.connect((err) => {
         if (err) throw err;
-        console.log("Connected");
+
+        const customer = {
+            firstname: "Mike",
+            lastname: "Jones",
+            email: "mike@gmail.com",
+        };
+
+        db.query("insert into customers set ?", customer, (err, result) => {
+            if (err) throw err;
+            console.log(result);
+        });
     });
 
     res.send("Customers list");
