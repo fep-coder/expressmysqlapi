@@ -3,19 +3,33 @@ class CustomerRepository {
         this.connectionPool = connectionPool;
     }
 
-    save(customer, callback) {
-        this.connectionPool
-            .getPool()
-            .query("insert into customers set ?", customer, callback);
+    get pool() {
+        return this.connectionPool.getPool();
     }
 
-    get(id) {}
+    save(customer, callback) {
+        this.pool.query("insert into customers set ?", customer, callback);
+    }
 
-    getAll() {}
+    get(id, callback) {
+        this.pool.query("select * from customers where id = ?", id, callback);
+    }
 
-    update() {}
+    getAll(callback) {
+        this.pool.query("select * from customers", callback);
+    }
 
-    delete(id) {}
+    update(id, customer, callback) {
+        this.pool.query(
+            "update customers set ? where id = ?",
+            [customer, id],
+            callback
+        );
+    }
+
+    delete(id, callback) {
+        this.pool.query("delete from customers where id = ?", id, callback);
+    }
 }
 
 module.exports = CustomerRepository;

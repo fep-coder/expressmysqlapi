@@ -7,25 +7,38 @@ const repository = new CustomerRepository(connectionPool);
 
 // GET /customers
 router.get("/", function (req, res) {
-    res.send("Customers list");
+    repository.getAll((err, result) => {
+        err
+            ? res.status(500).json({ error: err.toString() })
+            : res.status(200).json(result);
+    });
 });
 
 // GET /customers/:id
 router.get("/:id", function (req, res) {
-    console.log("ID: ", req.params.id);
-    res.sendStatus(200);
+    repository.get(req.params.id, (err, result) => {
+        err
+            ? res.status(500).json({ error: err.toString() })
+            : res.status(200).json(result);
+    });
 });
 
 // PUT /customers/:id
 router.put("/:id", function (req, res) {
-    console.log("body: ", req.body);
-    res.sendStatus(200);
+    repository.update(req.params.id, req.body, (err) => {
+        err
+            ? res.status(500).json({ error: err.toString() })
+            : res.sendStatus(200);
+    });
 });
 
 // DELETE /customers/:id
 router.delete("/:id", function (req, res) {
-    console.log("ID: ", req.params.id);
-    res.sendStatus(200);
+    repository.delete(req.params.id, (err) => {
+        err
+            ? res.status(500).json({ error: err.toString() })
+            : res.sendStatus(200);
+    });
 });
 
 // POST /customers
